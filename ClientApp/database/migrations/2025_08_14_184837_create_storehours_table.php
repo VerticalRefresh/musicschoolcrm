@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('storehours', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->smallInteger('weekday');
+            $table->time('opens_at');
+            $table->time('closes_at');
+            $table->text('notes');
+            $table->foreignId('franchise_id')->constrained()->cascadeOnDelete();
         });
     }
 

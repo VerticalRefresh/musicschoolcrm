@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('instrument_student', function (Blueprint $table) {
-            //
+            $table->id();
+            $table->timestamps();
         });
     }
 

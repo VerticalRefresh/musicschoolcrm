@@ -12,24 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->id(); //ID
+            $table->string('email')->unique(); //Login email
+            $table->timestampTz('email_verified_at')->nullable();  //Verified via link
+            $table->string('password'); //Password hash, not plaintext
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestampsTz(); //use Tz for conversion
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+            $table->string('email')->primary(); //One token per email
+            $table->string('token'); //Generated token
+            $table->timestampTz('created_at')->nullable(); //Timestamp
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->string('id')->primary(); //Session information
+            $table->foreignId('user_id')
+            ->constrained()
+            ->nullOnDelete();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -42,8 +43,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
+
     }
 };

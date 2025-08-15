@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestampsTz();
+            $table->morphs('addressable');
+            $table->unique(['addressable_type', 'addressable_id']);
+            $table->string('line1', 255);
+            $table->string('line2', 255)->nullable();
+            $table->string('city', 100);
+            $table->string('region', 100)->nullable();
+            $table->string('postal_code', 20)->nullable();
+            $table->index(['postal_code']);
+            $table->string('country_code', 2)->default('US');
         });
     }
 

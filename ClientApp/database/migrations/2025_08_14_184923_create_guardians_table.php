@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('guardians', function (Blueprint $table) {
             $table->id(); //Primary Key, ID
-            $table->timestamps(); //Timestamps, audit logs
+            $table->timestampsTz(); //Timestamps, audit logs
             $table->string('first_name'); //Name fields
             $table->string('last_name');
             $table->string('email'); //Contact information

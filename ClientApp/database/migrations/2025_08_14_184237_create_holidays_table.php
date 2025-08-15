@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('holidays', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestampsTz();
+            $table->foreignId('franchise_id') //Checked independently of hours table, takes precedence in code
+            ->constrained('franchises')
+            ->cascadeOnDelete();
+            $table->string('name');  //Holiday name, from ENUM for sake of holiday date refactoring (easter, labor day, etc)
+            $table->boolean('closed')->notNullValue()->default(false);
+            $table->text('notes')->nullable();  //Amended hours, etc
+            $table->time('opens_at')->nullable();
+            $table->time('closes_at')->nullable();
+            $table->date('date');
+            $table->unique(['franchise_id', 'date']);
         });
     }
 

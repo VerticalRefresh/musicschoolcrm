@@ -13,7 +13,19 @@ return new class extends Migration
     {
         Schema::create('franchises', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestampsTz();
+            $table->foreignId('owner_id')
+            ->constrained('employees')
+            ->restrictOnDelete();
+            $table->index('owner_id');
+            $table->string('phone');
+            $table->string('email')->nullable();
+            $table->foreignId('emergency_contact_id')
+            ->nullable()
+            ->constrained('employees')
+            ->nullOnDelete();
+            $table->index('emergency_contact_id');
+            $table->string('timezone', 64)->default('America/New_York');
         });
     }
 
