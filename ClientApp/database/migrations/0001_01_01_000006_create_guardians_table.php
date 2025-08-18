@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email'); //Contact information
             $table->string('phone');
+            $table->index(['last_name', 'first_name']);
             //Address from addresses polymorphic table
         });
     }

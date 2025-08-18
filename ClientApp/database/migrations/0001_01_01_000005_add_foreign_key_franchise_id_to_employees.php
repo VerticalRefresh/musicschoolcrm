@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('instrument_tutor', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('employees', function (Blueprint $table) {
+            $table->foreign('franchise_id')
+            ->references('id')->on('franchises')
+            ->nullOnDelete();
         });
     }
 
@@ -22,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('instrument_tutor');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropForeign(['franchise_id']);
+        });
     }
 };

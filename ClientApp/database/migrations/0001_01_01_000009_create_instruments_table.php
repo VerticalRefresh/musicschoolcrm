@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('instruments', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->string('category');
+            $table->timestampsTz();
+            $table->string('name', 100);
+            $table->string('category', 50)->nullable();
+            $table->unique(['name', 'category']);
         });
     }
 
