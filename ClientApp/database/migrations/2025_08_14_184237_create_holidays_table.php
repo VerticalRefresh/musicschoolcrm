@@ -12,17 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('holidays', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
-            $table->foreignId('franchise_id') //Checked independently of hours table, takes precedence in code
+            //Holidays table will be checked independently of hours table and take precedence in code.
+            $table->id(); //PK
+            $table->timestampsTz(); //Zone sensitive Timestamps
+
+            $table->foreignId('franchise_id') //Removed per holiday
             ->constrained('franchises')
             ->cascadeOnDelete();
+
             $table->string('name');  //Holiday name, from ENUM for sake of holiday date refactoring (easter, labor day, etc)
+
             $table->boolean('closed')->notNullValue()->default(false);
+
             $table->text('notes')->nullable();  //Amended hours, etc
-            $table->time('opens_at')->nullable();
+
+            $table->time('opens_at')->nullable(); //For open holiday hours, nullable if closed
             $table->time('closes_at')->nullable();
-            $table->date('date');
+
+            $table->date('date'); //For searching, plus yearly refactoring for date ambiguous (Easter, etc) can be coded later.
             $table->unique(['franchise_id', 'date']);
         });
     }

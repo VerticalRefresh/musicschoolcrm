@@ -12,17 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('store_hours', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
-            $table->unsignedTinyInteger('weekday');
+            $table->id();  //PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            $table->unsignedTinyInteger('weekday'); //0-6 Sun-Sat
+
             $table->time('opens_at')->nullable();
             $table->time('closes_at')->nullable();
-            $table->text('notes')->nullable();
-            $table->unique(['franchise_id', 'weekday']);
+
+            $table->text('notes')->nullable(); //For lunch closures, other information
+
+            $table->unique(['franchise_id', 'weekday']); //Indexes and ensures one entry for each day of the week per franchise
+
             $table->boolean('is_closed')->default(false);
-            $table->foreignId('franchise_id')->constrained()->cascadeOnDelete();
+
+            $table->foreignId('franchise_id')->constrained()->cascadeOnDelete(); //Removes store hours on delete of franchise
 
         });
+
+        //Sanity constraints
         if (\Illuminate\Support\Facades\DB::getDriverName() === 'pgsql') {
             \Illuminate\Support\Facades\DB::statement(
                 "ALTER TABLE store_hours ADD CONSTRAINT weekday_value_binding CHECK (weekday >= 0 AND weekday <= 6)"

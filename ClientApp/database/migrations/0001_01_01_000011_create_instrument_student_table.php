@@ -12,13 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instrument_student', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
+            $table->id(); //PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            //Combined table with instrument/student with additional data
             $table->foreignId('instrument_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->string('level', 20)->nullable();
-            $table->boolean('is_primary')->default(false);
-            $table->date('started_on')->nullable();
+
+            $table->string('level', 20)->nullable(); //ENUM in code
+
+            $table->boolean('is_primary')->default(false); //Multidisciplinary students
+
+            $table->date('started_on')->nullable(); 
 
             $table->primary(['instrument_id', 'student_id']);
         });

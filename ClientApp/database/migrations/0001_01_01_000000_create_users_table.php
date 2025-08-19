@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id(); //ID
+            
             $table->string('email')->unique(); //Login email
             $table->timestampTz('email_verified_at')->nullable();  //Verified via link
+            
             $table->string('password'); //Password hash, not plaintext
             $table->rememberToken();
             $table->timestampsTz(); //use Tz for conversion
@@ -29,8 +31,8 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary(); //Session information
             $table->foreignId('user_id')
-            ->constrained()
-            ->nullOnDelete();
+                ->constrained()
+                ->nullOnDelete();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

@@ -12,21 +12,32 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tutors', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
-            $table->string('first_name');
+            $table->id(); //PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            $table->string('first_name'); //Name fields
             $table->string('last_name');
-            $table->string('email');
+
+            $table->string('email'); //Contact info
             $table->string('phone', 32);
-            $table->foreignId('franchise_id')
+
+            $table->foreignId('franchise_id') //Primary franchise for tutor, not constraining tutor to specific franchise.
             ->nullable()
             ->constrained('franchises')
             ->nullOnDelete();
-            $table->index(['last_name', 'first_name']);
-            $table->decimal('balance', 10, 2)->default(0);
-            $table->unsignedTinyInteger('certification'); //1-5 stars
-            $table->string('age_group');
+
+            $table->index(['last_name', 'first_name']); //Rapid search and get
+
+            $table->decimal('balance', 10, 2)->default(0); //For payroll, per student session
+
+            $table->unsignedTinyInteger('certification'); //1-5 stars, for certification program
+
+            $table->string('age_group'); //To assist with enrollment
+
+            //Addresses from polymorphic table
         });
+
+        //Add data constraints for safety
         if (\Illuminate\Support\Facades\DB::getDriverName() === 'pgsql') {
             \Illuminate\Support\Facades\DB::statement(
                 "ALTER TABLE tutors ADD CONSTRAINT tutors_balance_nonneg CHECK (balance >= 0)"

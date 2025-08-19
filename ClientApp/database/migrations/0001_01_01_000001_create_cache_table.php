@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up(): void  //Created by laravel, default configuration
     {
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();

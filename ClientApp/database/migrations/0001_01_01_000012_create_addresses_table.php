@@ -12,10 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
-            $table->morphs('addressable');
+            $table->id(); //PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            $table->morphs('addressable'); //Employees, Franchises, Guardians, Tutors, Students
             $table->unique(['addressable_type', 'addressable_id']);
+
+            //Data prepared for possible international expansion
             $table->string('line1', 255);
             $table->string('line2', 255)->nullable();
             $table->string('city', 100);

@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instruments', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
-            $table->string('name', 100);
+            $table->id();//PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            //Table combined with student/tutor for multi-instrument players and educators
+            $table->string('name', 100); 
             $table->string('category', 50)->nullable();
             $table->unique(['name', 'category']);
         });

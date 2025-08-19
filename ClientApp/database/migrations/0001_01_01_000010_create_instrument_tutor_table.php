@@ -12,16 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instrument_tutor', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
+            $table->id(); //PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            //Table takes from instrument/tutor to create combined table, add additional information
             $table->foreignId('instrument_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tutor_id')->constrained()->cascadeOnDelete();
-            $table->string('proficiency', 20)->nullable();
-            $table->unsignedSmallInteger('years')->default(0);
-            $table->boolean('is_primary')->default('false');
+
+            $table->string('proficiency', 20)->nullable(); //ENUM in code
+
+            $table->unsignedSmallInteger('years')->default(0); //With instrument
+
+            $table->boolean('is_primary')->default('false'); //For multidisciplinary tutors
 
             $table->primary(['instrument_id', 'tutor_id']);
         });
+
+        //Sanity constraints
         if (\Illuminate\Support\Facades\DB::getDriverName() === 'pgsql') {
             \Illuminate\Support\Facades\DB::statement(
                 "ALTER TABLE instrument_tutor ADD CONSTRAINT instrument_years_nonneg CHECK (years >= 0)"

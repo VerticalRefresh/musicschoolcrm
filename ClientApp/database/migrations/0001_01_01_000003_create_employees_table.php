@@ -12,15 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->id();
-            $table->timestampsTz();
-            $table->string('first_name');
+            $table->id(); //PK
+            $table->timestampsTz(); //Zone sensitive timestamps
+
+            $table->string('first_name'); //Names
             $table->string('last_name');
-            $table->string('email')->nullable();
+
+            $table->string('email')->nullable(); //Contact information
             $table->string('phone', 32)->nullable();
-            $table->string('title')->nullable();
-            $table->foreignId('franchise_id');
-            $table->index(['last_name', 'first_name']);
+
+            $table->string('title')->nullable(); //Position with franchise/company
+
+            $table->foreignId('franchise_id'); //If assigned to a franchise, nullable w/ add_foreign migration
+
+            $table->index(['last_name', 'first_name']); //For rapid search and get
+
+            //Address from address polymorphic table
         });
     }
 

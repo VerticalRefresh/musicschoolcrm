@@ -14,25 +14,34 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id(); //PK
             $table->timestampsTz(); //Timestamps
+
             $table->string('first_name'); //Name fields
             $table->string('last_name');
+
             $table->string('email'); //Contact info
             $table->string('phone');
+
             $table->foreignId('tutor_id')->nullable() //One tutor per student, many students per tutor
             ->constrained('tutors')->nullOnDelete();
             $table->index('tutor_id');
+
             $table->foreignId('franchise_id')->nullable() //One main franchise per student, many students per franchise
             ->constrained('franchises')->nullOnDelete();
             $table->index('franchise_id');
+
             $table->decimal('subscription', 10, 2)->default(0); //Monthly payment for tutor(s)
             $table->decimal('balance', 10, 2)->default(0); //Balance owed
+            
             $table->date('birthday'); //Birthday (for determining if guardian is needed, birthday perks)
 
             $table->foreignId('guardian_id')->nullable() //If has a guardian, referenced here
             ->constrained('guardians')->nullOnDelete();
             $table->index('guardian_id');
+            
+            //Address from polymorphic table
         });
 
+        //Data constraints for safety
         if (\Illuminate\Support\Facades\DB::getDriverName() === 'pgsql') {
             \Illuminate\Support\Facades\DB::statement(
                 "ALTER TABLE students ADD CONSTRAINT student_sub_nonneg CHECK (subscription >= 0)"
