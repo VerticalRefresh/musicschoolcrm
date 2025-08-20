@@ -26,10 +26,28 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //Seed franchises
-        $franchises = Franchise::factory()->count(2)->create();
+        $owner = Employee::factory()->create([
+
+        ]);
+        $franchises = Franchise::factory()->count(2)->create([
+            'owner_id' => $owner->id,
+            'timezone' => 'America/New_York',
+        ]);
 
         //Seed instruments
-        $instruments = Instrument::factory()->count(6)->create();
+        $catalog = [
+            ['name' => 'Guitar', 'category' => 'Strings'],
+            ['name' => 'Violin', 'category' => 'Strings'],
+            ['name' => 'Cello', 'category' => 'Strings'],
+            ['name' => 'Piano', 'category' => 'Keys'],
+            ['name' => 'Flute', 'category' => 'Woodwind'],
+            ['name' => 'Trumpet', 'category' => 'Brass'],
+            ['name' => 'Drums', 'category' => 'Percussion'],
+            ['name' => 'Saxophone', 'category' => 'Woodwind'],
+        ];
+
+        \App\Models\Instrument::upsert($catalog, ['name', 'category']);
+        $instruments = \App\Models\Instrument::all();
 
         //Seed franchise dependent data
         foreach ($franchises as $franchise) {

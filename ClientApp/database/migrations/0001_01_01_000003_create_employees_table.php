@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->string('title')->nullable(); //Position with franchise/company
 
-            $table->foreignId('franchise_id'); //If assigned to a franchise, nullable w/ add_foreign migration
+            $table->foreignId('franchise_id')->nullable(); //If assigned to a franchise, nullable w/ add_foreign migration
 
             $table->index(['last_name', 'first_name']); //For rapid search and get
 

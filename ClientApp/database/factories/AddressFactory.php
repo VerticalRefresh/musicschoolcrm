@@ -18,7 +18,7 @@ class AddressFactory extends Factory
     {
         return [
             'line1'             => fake()->streetAddress(),
-            'line2'             => fake()->null,
+            'line2'             => null,
             'city'              => fake()->city(),
             'region'            => 'NY',
             'postal_code'       => fake()->postcode(),
