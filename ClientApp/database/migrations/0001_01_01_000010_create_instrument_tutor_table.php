@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instrument_tutor', function (Blueprint $table) {
-            $table->id(); //PK
             $table->timestampsTz(); //Zone sensitive timestamps
 
             //Table takes from instrument/tutor to create combined table, add additional information
