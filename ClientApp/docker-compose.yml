@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: clientapp-db
+    environment:
+      POSTGRES_DB: clientapp
+      POSTGRES_USER: clientapp
+      POSTGRES_PASSWORD: Pass1234
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"       
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clientapp -d clientapp || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  dbdata:

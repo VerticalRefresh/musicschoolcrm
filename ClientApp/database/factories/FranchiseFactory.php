@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\{Franchise, Employee};
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,6 +18,7 @@ class FranchiseFactory extends Factory
     public function definition(): array
     {
         return [
+            'owner_id' => Employee::factory(),
             'phone' => fake()->e164PhoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'timezone' => 'America/New York',
